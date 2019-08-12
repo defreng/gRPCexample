@@ -1,0 +1,11 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: mycertificate
+spec:
+  secretName: myapp-tls
+  dnsNames:
+    - SERVICE_DOMAIN
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
