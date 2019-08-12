@@ -16,7 +16,7 @@
  *
  */
 
-//go:generate protoc -I helloworld --go_out=plugins=grpc:helloworld helloworld/helloworld.proto
+//go:generate protoc -I helloworld --go_out=plugins=grpc:helloworld helloworld/helloworld.proto --include_imports --include_source_info --descriptor_set_out=helloworld/helloworld_descriptor.pb
 
 // Package main implements a server for Greeter service.
 package main
