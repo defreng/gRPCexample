@@ -27,7 +27,7 @@ name: SERVICE_DOMAIN
 #
 title: HelloWorld gRPC API
 apis:
-  - name: Greeter
+  - name: helloworld.Greeter
 
 #
 # API usage restrictions.
@@ -35,5 +35,5 @@ apis:
 usage:
   rules:
     # Greeter methods can be called without an API Key.
-    - selector: Greeter
+    - selector: helloworld.Greeter.SayHello
       allow_unregistered_calls: true
