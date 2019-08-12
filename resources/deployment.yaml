@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpcexample
+  template:
+    metadata:
+      labels:
+        app: grpcexample
+    spec:
+      containers:
+        # This container contains our application
+        - name: grpcexample
+          image: "us.gcr.io/GOOGLE_CLOUD_PROJECT/grpcserver:latest"
+          ports:
+            - name: grpc
+              containerPort: 50051
+              protocol: TCP
+        # And here we add the container with the Cloud Endpoints proxy
+        - name: esp
+          image: gcr.io/endpoints-release/endpoints-runtime:1
+          args: [
+            "--ssl_port=50052", # ssl includes "http2", which is required for gRPC
+            "--service=SERVICE_DOMAIN",
+            "--rollout_strategy=managed",
+            "--backend=grpc://127.0.0.1:50051"
+          ]
+          ports:
+            - containerPort: 50052
+          # The certificates must be placed in the hardcoded location /etc/nginx/ssl/nginx.key (nginx.crt)
+          volumeMounts:
+            - name: certificates
+              mountPath: /etc/nginx/ssl
+              readOnly: true
+      volumes:
+        - name: certificates
+          projected:
+            sources:
+              - secret:
+                  # name of the secret which contains the actual cert. We referenced it in certificate.yaml
+                  name: myapp-tls
+                  items:
+                    - key: tls.key
+                      path: nginx.key
+                    - key: tls.crt
+                      path: nginx.crt
