@@ -20,14 +20,14 @@ config_version: 3
 #
 # Name of the service configuration.
 #
-name: helloworld.endpoints.GOOGLE_PROJECT_ID.cloud.goog
+name: SERVICE_DOMAIN
 
 #
 # API title to appear in the user interface (Google Cloud Console).
 #
 title: HelloWorld gRPC API
 apis:
-  - name: helloworld.Greeter
+  - name: Greeter
 
 #
 # API usage restrictions.
@@ -35,5 +35,5 @@ apis:
 usage:
   rules:
     # Greeter methods can be called without an API Key.
-    - selector: helloworld.Greeter
+    - selector: Greeter
       allow_unregistered_calls: true
